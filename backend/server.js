@@ -9,7 +9,13 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-createTables();
+// Initialize tables asynchronously (don't block server startup)
+if (process.env.NODE_ENV !== 'production') {
+  createTables();
+} else {
+  // In production/serverless, try to create tables but don't block startup
+  createTables().catch(err => console.log('Tables may need manual creation:', err.message));
+}
 
 const authRoutes = require('./routes/auth');
 const topicsRoutes = require('./routes/topics');

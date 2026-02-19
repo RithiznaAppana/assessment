@@ -8,8 +8,15 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME || 'learning_platform',
   waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  connectionLimit: process.env.NODE_ENV === 'production' ? 1 : 10,
+  queueLimit: 0,
+  acquireTimeout: 60000,
+  timeout: 60000,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0,
+  ssl: process.env.DB_SSL === 'true' ? {
+    rejectUnauthorized: false
+  } : false
 });
 
 module.exports = pool;
