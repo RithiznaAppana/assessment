@@ -1,0 +1,8 @@
+node_modules/
+.env
+ass.txt
+rules.md
+*.log
+.DS_Store
+dist/
+build/
