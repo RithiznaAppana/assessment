@@ -17,7 +17,7 @@ const Quiz = () => {
 
   useEffect(() => {
     fetchQuestions();
-  }, [topicId]);
+  }, [topicId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchQuestions = async () => {
     try {

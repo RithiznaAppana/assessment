@@ -13,7 +13,7 @@ const Recommendations = () => {
   useEffect(() => {
     fetchRecommendations();
     fetchHistory();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchRecommendations = async () => {
     try {

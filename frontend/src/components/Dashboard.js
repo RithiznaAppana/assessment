@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const Dashboard = () => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user] = useState(JSON.parse(localStorage.getItem('user')));
   const [topics, setTopics] = useState([]);
   const [attempts, setAttempts] = useState([]);
   const [stats, setStats] = useState({});
@@ -13,7 +13,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchTopics();
     fetchProgress();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchTopics = async () => {
     try {
