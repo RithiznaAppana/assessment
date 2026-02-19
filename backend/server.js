@@ -6,14 +6,9 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Configure CORS for production and development
+// Configure CORS for all origins (open CORS policy)
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'https://assessment-79db-git-main-rithiznas-projects.vercel.app',
-    'https://assessment-git-main-rithiznas-projects.vercel.app',
-    process.env.FRONTEND_URL
-  ].filter(Boolean),
+  origin: true, // Allow all origins
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
