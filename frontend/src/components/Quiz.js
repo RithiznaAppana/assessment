@@ -4,6 +4,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+// Helper function to construct URL without double slashes
+const buildApiUrl = (endpoint) => {
+  const baseUrl = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+  const cleanEndpoint = endpoint.replace(/^\/+/, ''); // Remove leading slashes
+  return `${baseUrl}/${cleanEndpoint}`;
+};
+
 const Quiz = () => {
   const { topicId } = useParams();
   const navigate = useNavigate();
@@ -21,7 +28,7 @@ const Quiz = () => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get(`${API_URL}/topics/${topicId}/questions`);
+      const response = await axios.get(buildApiUrl(`topics/${topicId}/questions`));
       setQuestions(response.data);
     } catch (error) {
       console.error('Error fetching questions:', error);
@@ -55,7 +62,7 @@ const Quiz = () => {
         [questions[currentQuestion].question_id]: selectedOption
       };
 
-      const response = await axios.post(`${API_URL}/quiz/attempt`, {
+      const response = await axios.post(buildApiUrl('quiz/attempt'), {
         userId: user.id,
         topicId: parseInt(topicId),
         answers: finalAnswers

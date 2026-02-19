@@ -3,6 +3,13 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+// Helper function to construct URL without double slashes
+const buildApiUrl = (endpoint) => {
+  const baseUrl = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+  const cleanEndpoint = endpoint.replace(/^\/+/, ''); // Remove leading slashes
+  return `${baseUrl}/${cleanEndpoint}`;
+};
+
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -15,8 +22,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const endpoint = isLogin ? '/auth/login' : '/auth/register';
-      const response = await axios.post(`${API_URL}${endpoint}`, formData);
+      const endpoint = isLogin ? 'auth/login' : 'auth/register';
+      const url = buildApiUrl(endpoint);
+      console.log('API URL:', url); // Debug log
+      const response = await axios.post(url, formData);
 
       if (isLogin) {
         localStorage.setItem('token', response.data.token);

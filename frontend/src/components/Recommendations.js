@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+// Helper function to construct URL without double slashes
+const buildApiUrl = (endpoint) => {
+  const baseUrl = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+  const cleanEndpoint = endpoint.replace(/^\/+/, ''); // Remove leading slashes
+  return `${baseUrl}/${cleanEndpoint}`;
+};
+
 const Recommendations = () => {
   const [user] = useState(JSON.parse(localStorage.getItem('user')));
   const [recommendation, setRecommendation] = useState(null);
@@ -17,7 +24,7 @@ const Recommendations = () => {
 
   const fetchRecommendations = async () => {
     try {
-      const response = await axios.get(`${API_URL}/recommendations/${user.id}`);
+      const response = await axios.get(buildApiUrl(`recommendations/${user.id}`));
       setRecommendation(response.data);
       setLoading(false);
     } catch (error) {
@@ -28,7 +35,7 @@ const Recommendations = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(`${API_URL}/recommendations/history/${user.id}`);
+      const response = await axios.get(buildApiUrl(`recommendations/history/${user.id}`));
       setHistory(response.data);
     } catch (error) {
       console.error('Error fetching history:', error);

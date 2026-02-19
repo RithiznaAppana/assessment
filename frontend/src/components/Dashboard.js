@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+// Helper function to construct URL without double slashes
+const buildApiUrl = (endpoint) => {
+  const baseUrl = API_URL.replace(/\/+$/, ''); // Remove trailing slashes
+  const cleanEndpoint = endpoint.replace(/^\/+/, ''); // Remove leading slashes
+  return `${baseUrl}/${cleanEndpoint}`;
+};
+
 const Dashboard = () => {
   const [user] = useState(JSON.parse(localStorage.getItem('user')));
   const [topics, setTopics] = useState([]);
@@ -17,7 +24,7 @@ const Dashboard = () => {
 
   const fetchTopics = async () => {
     try {
-      const response = await axios.get(`${API_URL}/topics`);
+      const response = await axios.get(buildApiUrl('topics'));
       setTopics(response.data);
     } catch (error) {
       console.error('Error fetching topics:', error);
@@ -26,7 +33,7 @@ const Dashboard = () => {
 
   const fetchProgress = async () => {
     try {
-      const response = await axios.get(`${API_URL}/quiz/progress/${user.id}`);
+      const response = await axios.get(buildApiUrl(`quiz/progress/${user.id}`));
       setAttempts(response.data);
       
       const avgScore = response.data.length > 0 
