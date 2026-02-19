@@ -11,14 +11,26 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'https://assessment-79db-git-main-rithiznas-projects.vercel.app',
+    'https://assessment-git-main-rithiznas-projects.vercel.app',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
+// Debug CORS - can be removed after testing
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.get('Origin')}`);
+  next();
+});
 
 // Initialize tables asynchronously (don't block server startup)
 if (process.env.NODE_ENV !== 'production') {
