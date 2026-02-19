@@ -6,7 +6,18 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Configure CORS for production and development
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'https://assessment-79db-git-main-rithiznas-projects.vercel.app',
+    process.env.FRONTEND_URL
+  ].filter(Boolean),
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Initialize tables asynchronously (don't block server startup)
